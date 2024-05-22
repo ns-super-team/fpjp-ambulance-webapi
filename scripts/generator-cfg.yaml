@@ -1,0 +1,8 @@
+generatorName: go-gin-server
+templateDir: /local/scripts/templates
+outputDir: /local
+inputSpec: /local/api/fpjp.openapi.yaml
+enablePostProcessFile: true
+additionalProperties:
+  apiPath: internal/fpjp
+  packageName: fpjp

@@ -1,0 +1,7 @@
+internal/fpjp/README.md
+internal/fpjp/api_equipment_and_requests_management.go
+internal/fpjp/model_department.go
+internal/fpjp/model_equipment.go
+internal/fpjp/model_request.go
+internal/fpjp/model_room.go
+internal/fpjp/routers.go
