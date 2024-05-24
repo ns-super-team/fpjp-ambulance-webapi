@@ -13,8 +13,8 @@ package fpjp
 type Department struct {
 
 	// Unique identifier of the department
-	Id string `json:"id"`
+	Id string `json:"id" bson:"id"`
 
 	// Name of the department
-	Name string `json:"name"`
+	Name string `json:"name" bson:"name"`
 }

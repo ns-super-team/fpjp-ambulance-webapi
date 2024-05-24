@@ -18,6 +18,7 @@ import (
 type DbService[DocType interface{}] interface {
     CreateDocument(ctx context.Context, id string, document *DocType) error
     FindDocument(ctx context.Context, id string) (*DocType, error)
+		FindDocuments(ctx context.Context, filter bson.M) ([]*DocType, error)
     UpdateDocument(ctx context.Context, id string, document *DocType) error
     DeleteDocument(ctx context.Context, id string) error
     Disconnect(ctx context.Context) error
@@ -191,6 +192,7 @@ func (this *mongoSvc[DocType]) FindDocument(ctx context.Context, id string) (*Do
 	db := client.Database(this.DbName)
 	collection := db.Collection(this.Collection)
 	result := collection.FindOne(ctx, bson.D{{Key: "id", Value: id}})
+
 	switch result.Err() {
 	case nil:
 	case mongo.ErrNoDocuments:
@@ -198,12 +200,49 @@ func (this *mongoSvc[DocType]) FindDocument(ctx context.Context, id string) (*Do
 	default: // other errors - return them
 			return nil, result.Err()
 	}
+
 	var document *DocType
 	if err := result.Decode(&document); err != nil {
 			return nil, err
 	}
 	return document, nil
 }
+
+func (this *mongoSvc[DocType]) FindDocuments(ctx context.Context, filter bson.M) ([]*DocType, error) {
+
+	// querying db
+	ctx, contextCancel := context.WithTimeout(ctx, this.Timeout)
+	defer contextCancel()
+	client, err := this.connect(ctx)
+	if err != nil {
+			return nil, err
+	}
+	db := client.Database(this.DbName)
+	collection := db.Collection(this.Collection)
+	result, err := collection.Find(ctx, filter)
+
+	// handling errors
+	switch err {
+	case nil:
+	case mongo.ErrNoDocuments:
+			return nil, ErrNotFound
+	default:
+			return nil, result.Err()
+	}
+
+	// constructing list of documents
+	var documents []*DocType
+	for result.Next(ctx) {
+			var document DocType
+			if err := result.Decode(&document); err != nil {
+					return nil, err
+			}
+			documents = append(documents, &document)
+	}
+
+	return documents, nil
+}
+
 
 func (this *mongoSvc[DocType]) UpdateDocument(ctx context.Context, id string, document *DocType) error {
 	ctx, contextCancel := context.WithTimeout(ctx, this.Timeout)

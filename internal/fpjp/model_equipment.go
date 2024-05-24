@@ -13,17 +13,17 @@ package fpjp
 type Equipment struct {
 
 	// Unique identifier of the equipment
-	Id string `json:"id"`
+	Id string `json:"id" bson:"id"`
 
 	// Identifier of the room the equipment belongs to
-	RoomId string `json:"room_id" binding:"required"`
+	RoomId string `json:"room_id" bson:"room_id" binding:"required"`
 
 	// Type of the equipment
-	Type string `json:"type" binding:"required"`
+	Type string `json:"type" bson:"type" binding:"required"`
 
 	// Name of the equipment
-	Name string `json:"name" binding:"required"`
+	Name string `json:"name" bson:"name" binding:"required"`
 
 	// Number of equipment items available
-	Count int32 `json:"count" binding:"required"`
+	Count int32 `json:"count" bson:"count" binding:"required"`
 }

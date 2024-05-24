@@ -13,20 +13,20 @@ package fpjp
 type Request struct {
 
 	// Unique identifier of the request
-	Id string `json:"id"`
+	Id string `json:"id" bson:"id"`
 
 	// Identifier of the room the request is associated with
-	RoomId string `json:"room_id"`
+	RoomId string `json:"room_id" bson:"room_id"`
 
 	// Type of the request
-	Type string `json:"type"`
+	Type string `json:"type" bson:"type"`
 
 	// Name of the equipment requested or to be repaired
-	Name string `json:"name"`
+	Name string `json:"name" bson:"name"`
 
 	// Number of items requested (only applicable for missing-equipment requests)
-	Count *int32 `json:"count,omitempty"`
+	Count *int32 `json:"count,omitempty" bson:"count,omitempty"`
 
 	// Detailed description of the request
-	Description string `json:"description"`
+	Description string `json:"description" bson:"description"`
 }

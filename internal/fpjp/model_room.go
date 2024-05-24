@@ -13,11 +13,11 @@ package fpjp
 type Room struct {
 
 	// Unique identifier of the room
-	Id string `json:"id"`
+	Id string `json:"id" bson:"id"`
 
 	// Identifier of the department the room belongs to
-	DepartmentId string `json:"department_id"`
+	DepartmentId string `json:"department_id" bson:"department_id"`
 
 	// Name of the room
-	Name string `json:"name"`
+	Name string `json:"name" bson:"name"`
 }
