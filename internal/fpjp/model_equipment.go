@@ -16,14 +16,14 @@ type Equipment struct {
 	Id string `json:"id"`
 
 	// Identifier of the room the equipment belongs to
-	RoomId string `json:"room_id"`
+	RoomId string `json:"room_id" binding:"required"`
 
 	// Type of the equipment
-	Type string `json:"type"`
+	Type string `json:"type" binding:"required"`
 
 	// Name of the equipment
-	Name string `json:"name"`
+	Name string `json:"name" binding:"required"`
 
 	// Number of equipment items available
-	Count int32 `json:"count"`
+	Count int32 `json:"count" binding:"required"`
 }
