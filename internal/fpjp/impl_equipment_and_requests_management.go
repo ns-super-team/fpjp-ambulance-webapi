@@ -673,8 +673,6 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 	ctx.JSON(http.StatusOK, response)
 }
 
-
-
 // GetDepartmentRequests - Provides list of all requests in a department
 func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gin.Context) {
 	
