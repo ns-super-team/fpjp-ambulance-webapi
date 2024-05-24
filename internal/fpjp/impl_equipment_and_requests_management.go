@@ -81,9 +81,9 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Con
 		ctx.JSON(
 			http.StatusConflict,
 			gin.H{
-					"status":  "Conflict",
-					"message": "Equipment already exists",
-					"error":   err.Error(),
+				"status":  "Conflict",
+				"message": "Equipment already exists",
+				"error":   err.Error(),
 			})
 	default:
 		ctx.JSON(
@@ -202,8 +202,7 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 				"status": "Bad Request",
 				"message": "ID provided in request body is not equal to ID in URL parameter.",
 				"error": "ID provided in request body is not equal to ID in URL parameter.",
-			},
-		)
+			})
 		return
 	}
 	
@@ -223,8 +222,7 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 				"status": "Not Found",
 				"message": "Equipment with provided ID was not found.",
 				"error": err.Error(),
-			},
-		)
+			})
 	default:
 		ctx.JSON(
 			http.StatusBadGateway,
@@ -232,26 +230,237 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 				"status": "Bad Gateway",
 				"message": "Failed to update equipment in database.",
 				"error": err.Error(),
-			},
-		)
+			})
 	}
 }
 
 
 // AddRoomRequest - Adds new request to a room
 func (this *implEquipmentAndRequestsManagementAPI) AddRoomRequest(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	value, exists := ctx.Get("request_service")
+	if !exists {
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status":  "Internal Server Error",
+				"message": "request_service not found",
+				"error":   "request_service not found",
+			})
+		return
+	}
+
+	db, ok := value.(db_service.DbService[Request])
+	if !ok {
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status":  "Internal Server Error",
+				"message": "request_service context is not of required type",
+				"error":   "cannot cast request_service context to db_service.DbService",
+			})
+		return
+	}
+
+	request := Request{}
+	err := ctx.ShouldBindJSON(&request)
+	if err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{
+				"status":  "Bad Request",
+				"message": "Invalid request body",
+				"error":   err.Error(),
+			})
+		return
+	}
+
+	// Get room ID from URL param
+	URLroomId := ctx.Param("roomId")
+
+	// Check if room ID from URL param and room ID from request body are equal
+	if URLroomId != request.RoomId {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{
+				"status":  "Bad Request",
+				"message": "Room ID provided in request body is not equal to room ID in URL parameter.",
+				"error":   "Room ID provided in request body is not equal to room ID in URL parameter.",
+			})
+		return
+	}
+
+	// Create new UUID if request Id is empty
+	if request.Id == "" {
+		request.Id = uuid.New().String()
+	}
+
+	// Create request
+	err = db.CreateDocument(ctx, request.Id, &request)
+
+	switch err {
+	case nil:
+		ctx.JSON(
+				http.StatusCreated,
+				request,
+		)
+	case db_service.ErrConflict:
+		ctx.JSON(
+			http.StatusConflict,
+			gin.H{
+				"status":  "Conflict",
+				"message": "Request already exists",
+				"error":   err.Error(),
+			})
+	default:
+		ctx.JSON(
+			http.StatusBadGateway,
+			gin.H{
+				"status":  "Bad Gateway",
+				"message": "Failed to create request in database",
+				"error":   err.Error(),
+			})
+	}
 }
+
 
 // DeleteRequest - Deletes specific request
 func (this *implEquipmentAndRequestsManagementAPI) DeleteRequest(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	value, exists := ctx.Get("request_service")
+	if (!exists) {
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status": "Internal Server Error",
+				"message": "request_service not found",
+				"error": "request_service not found",
+			})
+		return
+	}
+
+	db, ok := value.(db_service.DbService[Request])
+	if (!ok) {
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status": "Internal Server Error",
+				"message": "request_service context is not of type db_service.DbService",
+				"error": "cannot cast request_service context to db_service.DbService",
+			})
+		return
+	}
+
+	// Get request ID from URL
+	requestId := ctx.Param("requestId")
+
+	// Delete the document
+	err := db.DeleteDocument(ctx, requestId)
+
+	switch (err) {
+	case nil:
+		ctx.AbortWithStatus(http.StatusNoContent)
+	case db_service.ErrNotFound:
+		ctx.JSON(
+			http.StatusNotFound,
+			gin.H{
+				"status": "Not Found",
+				"message": "Request not found",
+				"error": err.Error(),
+			})
+	default:
+		ctx.JSON(
+			http.StatusBadGateway,
+			gin.H{
+				"status": "Bad Gateway",
+				"message": "Failed to delete request from database",
+				"error": err.Error(),
+			})
+	}
 }
+
 
 // UpdateRequest - Updates specific request
 func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Context) {
-	ctx.AbortWithStatus(http.StatusNotImplemented)
+	value, exists := ctx.Get("request_service")
+	if !exists {
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status": "Internal Server Error",
+				"message": "request_service not found",
+				"error": "request_service not found",
+			})
+		return
+	}
+
+	db, ok := value.(db_service.DbService[Request])
+	if !ok {
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status": "Internal Server Error",
+				"message": "request_service context is not of type db_service.DbService",
+				"error": "cannot cast request_service context to db_service.DbService",
+			})
+		return
+	}
+
+	request := Request{}
+	err := ctx.ShouldBindJSON(&request)
+	if err != nil {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{
+				"status": "Bad Request",
+				"message": "Invalid request body",
+				"error": err.Error(),
+			})
+		return
+	}
+
+	// Get request ID from URL param
+	URLrequestId := ctx.Param("requestId")
+
+	// Check if ID from URL param and ID from request body are equal
+	if URLrequestId != request.Id {
+		ctx.JSON(
+			http.StatusBadRequest,
+			gin.H{
+					"status": "Bad Request",
+					"message": "ID provided in request body is not equal to ID in URL parameter.",
+					"error": "ID provided in request body is not equal to ID in URL parameter.",
+			})
+		return
+	}
+	
+	// Update request
+	err = db.UpdateDocument(ctx, request.Id, &request)
+
+	switch err {
+	case nil:
+		ctx.JSON(
+			http.StatusOK,
+			request,
+		)
+	case db_service.ErrNotFound:
+		ctx.JSON(
+			http.StatusNotFound,
+			gin.H{
+					"status": "Not Found",
+					"message": "Request with provided ID was not found.",
+					"error": err.Error(),
+			})
+	default:
+		ctx.JSON(
+			http.StatusBadGateway,
+			gin.H{
+				"status": "Bad Gateway",
+				"message": "Failed to update request in database.",
+				"error": err.Error(),
+			})
+	}
 }
+
+
 
 // GetDepartments - Provides list of all departments
 func (this *implEquipmentAndRequestsManagementAPI) GetDepartments(ctx *gin.Context) {

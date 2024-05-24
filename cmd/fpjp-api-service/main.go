@@ -1,16 +1,16 @@
 package main
 
 import (
-    "log"
-    "os"
-    "strings"
-    "github.com/gin-gonic/gin"
-    "github.com/ns-super-team/fpjp-ambulance-webapi/api"
+		"log"
+		"os"
+		"strings"
+		"github.com/gin-gonic/gin"
+		"github.com/ns-super-team/fpjp-ambulance-webapi/api"
 		"github.com/ns-super-team/fpjp-ambulance-webapi/internal/fpjp"
 		"github.com/ns-super-team/fpjp-ambulance-webapi/internal/db_service"
-    "context"
-    "time"
-    "github.com/gin-contrib/cors"
+		"context"
+		"time"
+		"github.com/gin-contrib/cors"
 )
 
 func main() {
