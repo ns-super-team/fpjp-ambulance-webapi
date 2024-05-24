@@ -643,6 +643,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		Id    string `json:"id"`
 		Name  string `json:"name"`
 		Rooms []struct {
+			Id				string						`json:"id"`
 			Name      string            `json:"name"`
 			Equipment []Equipment  `json:"equipment"`
 		} `json:"rooms"`
@@ -659,9 +660,11 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 			}
 		}
 		response.Rooms = append(response.Rooms, struct {
+			Id				string						`json:"id"`
 			Name      string            `json:"name"`
 			Equipment []Equipment  `json:"equipment"`
 		}{
+			Id:				 room.Id,
 			Name:      room.Name,
 			Equipment: roomEquip,
 		})
@@ -800,6 +803,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gi
 			Id    string `json:"id"`
 			Name  string `json:"name"`
 			Rooms []struct {
+					Id			 string		 `json:"id"`
 					Name     string    `json:"name"`
 					Requests []Request `json:"requests"`
 			} `json:"rooms"`
@@ -816,9 +820,11 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gi
 					}
 			}
 			response.Rooms = append(response.Rooms, struct {
+					Id			 string		 `json:"id"`
 					Name     string    `json:"name"`
 					Requests []Request `json:"requests"`
 			}{
+					Id:			  room.Id,
 					Name:     room.Name,
 					Requests: roomRequests,
 			})
