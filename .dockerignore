@@ -1,0 +1,5 @@
+internal/fpjp/api_*
+internal/fpjp/model_*
+internal/fpjp/routers.go
+build/
+deployments/

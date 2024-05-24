@@ -82,7 +82,7 @@ func NewMongoService[DocType interface{}](config MongoServiceConfig) DbService[D
 	}
 
 	if svc.Collection == "" {
-			svc.Collection = enviro("FPJP_API_MONGODB_COLLECTION", "departments")
+			svc.Collection = enviro("FPJP_API_MONGODB_COLLECTION", "fpjp-collection")
 	}
 
 	if svc.Timeout == 0 {
