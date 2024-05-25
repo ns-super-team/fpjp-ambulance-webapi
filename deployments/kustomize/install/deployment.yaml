@@ -14,7 +14,7 @@ spec:
       spec:
         containers:
         - name: fpjp-ambulance-webapi-container
-          image: docker pull ghcr.io/ns-super-team/fpjp-ambulance-webapi:latest
+          image: ghcr.io/ns-super-team/fpjp-ambulance-webapi:latest
           imagePullPolicy: Always
           ports:
           - name: webapi-port
