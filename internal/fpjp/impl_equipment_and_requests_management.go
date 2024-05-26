@@ -680,6 +680,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 			Equipment: roomEquip,
 		})
 	}
+	fmt.Println(response)
 
 	ctx.JSON(http.StatusOK, response)
 }

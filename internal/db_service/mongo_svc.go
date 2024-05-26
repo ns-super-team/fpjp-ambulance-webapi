@@ -174,8 +174,13 @@ func (this *mongoSvc[DocType]) CreateDocument(ctx context.Context, id string, do
 	default: // other errors - return them
 		return result.Err()
 	}
-
 	_, err = collection.InsertOne(ctx, document)
+	fmt.Println("collection ", collection.Name())
+
+	result = collection.FindOne(ctx, bson.D{{Key: "id", Value: id}})
+	result.Decode(&document)
+	fmt.Println("result", document)
+
 	return err
 }
 
