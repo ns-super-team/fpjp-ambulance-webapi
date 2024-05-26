@@ -3,13 +3,13 @@ package fpjp
 import (
 	"net/http"
 
-	"github.com/ns-super-team/fpjp-ambulance-webapi/internal/db_service"
+	"fmt"
+
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"github.com/ns-super-team/fpjp-ambulance-webapi/internal/db_service"
 	"go.mongodb.org/mongo-driver/bson"
-	"fmt"
 )
-
 
 // AddRoomEquipment - Adds new equipment to a room
 func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Context) {
@@ -18,9 +18,9 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Con
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "equipment_service not found",
-				"error": "equipment_service not found",
+				"error":   "equipment_service not found",
 			})
 		return
 	}
@@ -38,14 +38,14 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Con
 	}
 
 	equipment := Equipment{}
-	err := ctx.ShouldBindJSON(&equipment);
+	err := ctx.ShouldBindJSON(&equipment)
 	if err != nil {
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
-				"status": "Bad Request",
+				"status":  "Bad Request",
 				"message": "Invalid request body",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 		return
 	}
@@ -58,16 +58,16 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Con
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
-				"status": "Bad Request",
+				"status":  "Bad Request",
 				"message": "Room ID provided in request body is not equal to room ID in URL parameter.",
-				"error": "Room ID provided in request body is not equal to room ID in URL parameter.",
+				"error":   "Room ID provided in request body is not equal to room ID in URL parameter.",
 			})
 		return
 	}
 
 	// create new UUID
 	if equipment.Id == "" {
-			equipment.Id = uuid.New().String()
+		equipment.Id = uuid.New().String()
 	}
 
 	// create equipment
@@ -105,9 +105,9 @@ func (this *implEquipmentAndRequestsManagementAPI) DeleteEquipment(ctx *gin.Cont
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "equipment_service not found",
-				"error": "equipment_service not found",
+				"error":   "equipment_service not found",
 			})
 		return
 	}
@@ -117,9 +117,9 @@ func (this *implEquipmentAndRequestsManagementAPI) DeleteEquipment(ctx *gin.Cont
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "equipment_service context is not of type db_service.DbService",
-				"error": "cannot cast equipment_service context to db_service.DbService",
+				"error":   "cannot cast equipment_service context to db_service.DbService",
 			})
 		return
 	}
@@ -137,17 +137,17 @@ func (this *implEquipmentAndRequestsManagementAPI) DeleteEquipment(ctx *gin.Cont
 		ctx.JSON(
 			http.StatusNotFound,
 			gin.H{
-				"status": "Not Found",
+				"status":  "Not Found",
 				"message": "Equipment not found",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 	default:
 		ctx.JSON(
 			http.StatusBadGateway,
 			gin.H{
-				"status": "Bad Gateway",
+				"status":  "Bad Gateway",
 				"message": "Failed to delete equipment from database",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 	}
 }
@@ -159,9 +159,9 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "equipment_service not found",
-				"error": "equipment_service not found",
+				"error":   "equipment_service not found",
 			})
 		return
 	}
@@ -171,22 +171,22 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "equipment_service context is not of type db_service.DbService",
-				"error": "cannot cast equipment_service context to db_service.DbService",
+				"error":   "cannot cast equipment_service context to db_service.DbService",
 			})
 		return
 	}
 
 	equipment := Equipment{}
-	err := ctx.ShouldBindJSON(&equipment);
+	err := ctx.ShouldBindJSON(&equipment)
 	if err != nil {
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
-				"status": "Bad Request",
+				"status":  "Bad Request",
 				"message": "Invalid request body",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 		return
 	}
@@ -199,13 +199,13 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
-				"status": "Bad Request",
+				"status":  "Bad Request",
 				"message": "ID provided in request body is not equal to ID in URL parameter.",
-				"error": "ID provided in request body is not equal to ID in URL parameter.",
+				"error":   "ID provided in request body is not equal to ID in URL parameter.",
 			})
 		return
 	}
-	
+
 	// update equipment
 	err = db.UpdateDocument(ctx, equipment.Id, &equipment)
 
@@ -219,17 +219,17 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 		ctx.JSON(
 			http.StatusNotFound,
 			gin.H{
-				"status": "Not Found",
+				"status":  "Not Found",
 				"message": "Equipment with provided ID was not found.",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 	default:
 		ctx.JSON(
 			http.StatusBadGateway,
 			gin.H{
-				"status": "Bad Gateway",
+				"status":  "Bad Gateway",
 				"message": "Failed to update equipment in database.",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 	}
 }
@@ -299,8 +299,8 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomRequest(ctx *gin.Conte
 	switch err {
 	case nil:
 		ctx.JSON(
-				http.StatusCreated,
-				request,
+			http.StatusCreated,
+			request,
 		)
 	case db_service.ErrConflict:
 		ctx.JSON(
@@ -324,25 +324,25 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomRequest(ctx *gin.Conte
 // DeleteRequest - Deletes specific request
 func (this *implEquipmentAndRequestsManagementAPI) DeleteRequest(ctx *gin.Context) {
 	value, exists := ctx.Get("request_service")
-	if (!exists) {
+	if !exists {
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "request_service not found",
-				"error": "request_service not found",
+				"error":   "request_service not found",
 			})
 		return
 	}
 
 	db, ok := value.(db_service.DbService[Request])
-	if (!ok) {
+	if !ok {
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "request_service context is not of type db_service.DbService",
-				"error": "cannot cast request_service context to db_service.DbService",
+				"error":   "cannot cast request_service context to db_service.DbService",
 			})
 		return
 	}
@@ -353,24 +353,24 @@ func (this *implEquipmentAndRequestsManagementAPI) DeleteRequest(ctx *gin.Contex
 	// Delete the document
 	err := db.DeleteDocument(ctx, requestId)
 
-	switch (err) {
+	switch err {
 	case nil:
 		ctx.AbortWithStatus(http.StatusNoContent)
 	case db_service.ErrNotFound:
 		ctx.JSON(
 			http.StatusNotFound,
 			gin.H{
-				"status": "Not Found",
+				"status":  "Not Found",
 				"message": "Request not found",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 	default:
 		ctx.JSON(
 			http.StatusBadGateway,
 			gin.H{
-				"status": "Bad Gateway",
+				"status":  "Bad Gateway",
 				"message": "Failed to delete request from database",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 	}
 }
@@ -382,9 +382,9 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Contex
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "request_service not found",
-				"error": "request_service not found",
+				"error":   "request_service not found",
 			})
 		return
 	}
@@ -394,9 +394,9 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Contex
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "request_service context is not of type db_service.DbService",
-				"error": "cannot cast request_service context to db_service.DbService",
+				"error":   "cannot cast request_service context to db_service.DbService",
 			})
 		return
 	}
@@ -407,9 +407,9 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Contex
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
-				"status": "Bad Request",
+				"status":  "Bad Request",
 				"message": "Invalid request body",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 		return
 	}
@@ -422,13 +422,13 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Contex
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
-					"status": "Bad Request",
-					"message": "ID provided in request body is not equal to ID in URL parameter.",
-					"error": "ID provided in request body is not equal to ID in URL parameter.",
+				"status":  "Bad Request",
+				"message": "ID provided in request body is not equal to ID in URL parameter.",
+				"error":   "ID provided in request body is not equal to ID in URL parameter.",
 			})
 		return
 	}
-	
+
 	// Update request
 	err = db.UpdateDocument(ctx, request.Id, &request)
 
@@ -442,17 +442,17 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Contex
 		ctx.JSON(
 			http.StatusNotFound,
 			gin.H{
-					"status": "Not Found",
-					"message": "Request with provided ID was not found.",
-					"error": err.Error(),
+				"status":  "Not Found",
+				"message": "Request with provided ID was not found.",
+				"error":   err.Error(),
 			})
 	default:
 		ctx.JSON(
 			http.StatusBadGateway,
 			gin.H{
-				"status": "Bad Gateway",
+				"status":  "Bad Gateway",
 				"message": "Failed to update request in database.",
-				"error": err.Error(),
+				"error":   err.Error(),
 			})
 	}
 }
@@ -464,9 +464,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartments(ctx *gin.Conte
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "department_service not found",
-				"error": "department_service not found",
+				"error":   "department_service not found",
 			})
 		return
 	}
@@ -476,13 +476,19 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartments(ctx *gin.Conte
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "department_service context is not of type db_service.DbService",
-				"error": "cannot cast department_service context to db_service.DbService",
+				"error":   "cannot cast department_service context to db_service.DbService",
 			})
 		return
 	}
+	fmt.Printf("db: %v\nok: %v \n", db, ok)
 
+	if db == nil {
+		fmt.Println("db is nil")
+	} else {
+		fmt.Println("db is not nil")
+	}
 
 	//create empty filter
 	filter := bson.M{}
@@ -531,9 +537,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "department_service not found",
-				"error": "department_service not found",
+				"error":   "department_service not found",
 			})
 		return
 	}
@@ -543,9 +549,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "department_service context is not of type db_service.DbService",
-				"error": "cannot cast department_service context to db_service.DbService",
+				"error":   "cannot cast department_service context to db_service.DbService",
 			})
 		return
 	}
@@ -553,16 +559,15 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 	// get department
 	department, err := departmentService.FindDocument(ctx, departmentID)
 
-
 	// room service
 	value, exists = ctx.Get("room_service")
 	if !exists {
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "room_service not found",
-				"error": "room_service not found",
+				"error":   "room_service not found",
 			})
 		return
 	}
@@ -572,9 +577,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "room_service context is not of type db_service.DbService",
-				"error": "cannot cast room_service context to db_service.DbService",
+				"error":   "cannot cast room_service context to db_service.DbService",
 			})
 		return
 	}
@@ -585,9 +590,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "equipment_service not found",
-				"error": "equipment_service not found",
+				"error":   "equipment_service not found",
 			})
 		return
 	}
@@ -597,17 +602,16 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "equipment_service context is not of type db_service.DbService",
-				"error": "cannot cast equipment_service context to db_service.DbService",
+				"error":   "cannot cast equipment_service context to db_service.DbService",
 			})
 		return
 	}
 
-
 	// filter rooms by department
 	roomsFilter := bson.M{"department_id": departmentID}
-	
+
 	// get rooms
 	rooms, err := roomService.FindDocuments(ctx, roomsFilter)
 	if err != nil {
@@ -618,7 +622,6 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		})
 		return
 	}
-
 
 	// get list of room IDs
 	roomIDs := make([]string, len(rooms))
@@ -643,12 +646,12 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		Id    string `json:"id"`
 		Name  string `json:"name"`
 		Rooms []struct {
-			Id				string						`json:"id"`
-			Name      string            `json:"name"`
-			Equipment []Equipment  `json:"equipment"`
+			Id        string      `json:"id"`
+			Name      string      `json:"name"`
+			Equipment []Equipment `json:"equipment"`
 		} `json:"rooms"`
 	}{
-		Id: departmentID,
+		Id:   departmentID,
 		Name: department.Name,
 	}
 
@@ -660,11 +663,11 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 			}
 		}
 		response.Rooms = append(response.Rooms, struct {
-			Id				string						`json:"id"`
-			Name      string            `json:"name"`
-			Equipment []Equipment  `json:"equipment"`
+			Id        string      `json:"id"`
+			Name      string      `json:"name"`
+			Equipment []Equipment `json:"equipment"`
 		}{
-			Id:				 room.Id,
+			Id:        room.Id,
 			Name:      room.Name,
 			Equipment: roomEquip,
 		})
@@ -675,15 +678,15 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 
 // GetDepartmentRequests - Provides list of all requests in a department
 func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gin.Context) {
-	
+
 	departmentID := ctx.Param("departmentId")
 	if departmentID == "" {
-			ctx.JSON(http.StatusBadRequest, gin.H{
-					"status":  "Bad Request",
-					"message": "Department ID is required",
-					"error":   "Department ID is missing in URL parameters",
-			})
-			return
+		ctx.JSON(http.StatusBadRequest, gin.H{
+			"status":  "Bad Request",
+			"message": "Department ID is required",
+			"error":   "Department ID is missing in URL parameters",
+		})
+		return
 	}
 
 	// department service
@@ -692,9 +695,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gi
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "department_service not found",
-				"error": "department_service not found",
+				"error":   "department_service not found",
 			})
 		return
 	}
@@ -704,9 +707,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gi
 		ctx.JSON(
 			http.StatusInternalServerError,
 			gin.H{
-				"status": "Internal Server Error",
+				"status":  "Internal Server Error",
 				"message": "department_service context is not of type db_service.DbService",
-				"error": "cannot cast department_service context to db_service.DbService",
+				"error":   "cannot cast department_service context to db_service.DbService",
 			})
 		return
 	}
@@ -717,115 +720,115 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gi
 	// room service
 	value, exists = ctx.Get("room_service")
 	if !exists {
-			ctx.JSON(
-					http.StatusInternalServerError,
-					gin.H{
-							"status": "Internal Server Error",
-							"message": "room_service not found",
-							"error": "room_service not found",
-					})
-			return
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status":  "Internal Server Error",
+				"message": "room_service not found",
+				"error":   "room_service not found",
+			})
+		return
 	}
 
 	roomService, ok := value.(db_service.DbService[Room])
 	if !ok {
-			ctx.JSON(
-					http.StatusInternalServerError,
-					gin.H{
-							"status": "Internal Server Error",
-							"message": "room_service context is not of type db_service.DbService",
-							"error": "cannot cast room_service context to db_service.DbService",
-					})
-			return
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status":  "Internal Server Error",
+				"message": "room_service context is not of type db_service.DbService",
+				"error":   "cannot cast room_service context to db_service.DbService",
+			})
+		return
 	}
 
 	// request service
 	value, exists = ctx.Get("request_service")
 	if !exists {
-			ctx.JSON(
-					http.StatusInternalServerError,
-					gin.H{
-							"status": "Internal Server Error",
-							"message": "request_service not found",
-							"error": "request_service not found",
-					})
-			return
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status":  "Internal Server Error",
+				"message": "request_service not found",
+				"error":   "request_service not found",
+			})
+		return
 	}
 
 	requestService, ok := value.(db_service.DbService[Request])
 	if !ok {
-			ctx.JSON(
-					http.StatusInternalServerError,
-					gin.H{
-							"status": "Internal Server Error",
-							"message": "request_service context is not of type db_service.DbService",
-							"error": "cannot cast request_service context to db_service.DbService",
-					})
-			return
+		ctx.JSON(
+			http.StatusInternalServerError,
+			gin.H{
+				"status":  "Internal Server Error",
+				"message": "request_service context is not of type db_service.DbService",
+				"error":   "cannot cast request_service context to db_service.DbService",
+			})
+		return
 	}
 
 	// filter rooms by department
 	roomsFilter := bson.M{"department_id": departmentID}
-	
+
 	// get rooms
 	rooms, err := roomService.FindDocuments(ctx, roomsFilter)
 	if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-					"status":  "Internal Server Error",
-					"message": "Failed to retrieve rooms",
-					"error":   err.Error(),
-			})
-			return
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"status":  "Internal Server Error",
+			"message": "Failed to retrieve rooms",
+			"error":   err.Error(),
+		})
+		return
 	}
 
 	// get list of room IDs
 	roomIDs := make([]string, len(rooms))
 	for i, room := range rooms {
-			roomIDs[i] = room.Id
+		roomIDs[i] = room.Id
 	}
 
 	// get requests based on room IDs
 	requestFilter := bson.M{"room_id": bson.M{"$in": roomIDs}}
 	requests, err := requestService.FindDocuments(ctx, requestFilter)
 	if err != nil {
-			ctx.JSON(http.StatusInternalServerError, gin.H{
-					"status":  "Internal Server Error",
-					"message": "Failed to retrieve requests",
-					"error":   err.Error(),
-			})
-			return
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"status":  "Internal Server Error",
+			"message": "Failed to retrieve requests",
+			"error":   err.Error(),
+		})
+		return
 	}
 
 	// create response object
 	response := struct {
-			Id    string `json:"id"`
-			Name  string `json:"name"`
-			Rooms []struct {
-					Id			 string		 `json:"id"`
-					Name     string    `json:"name"`
-					Requests []Request `json:"requests"`
-			} `json:"rooms"`
+		Id    string `json:"id"`
+		Name  string `json:"name"`
+		Rooms []struct {
+			Id       string    `json:"id"`
+			Name     string    `json:"name"`
+			Requests []Request `json:"requests"`
+		} `json:"rooms"`
 	}{
-			Id: departmentID,
-			Name: department.Name,
+		Id:   departmentID,
+		Name: department.Name,
 	}
 
 	for _, room := range rooms {
-			roomRequests := []Request{}
-			for _, req := range requests {
-					if req.RoomId == room.Id {
-							roomRequests = append(roomRequests, *req)
-					}
+		roomRequests := []Request{}
+		for _, req := range requests {
+			if req.RoomId == room.Id {
+				roomRequests = append(roomRequests, *req)
 			}
-			response.Rooms = append(response.Rooms, struct {
-					Id			 string		 `json:"id"`
-					Name     string    `json:"name"`
-					Requests []Request `json:"requests"`
-			}{
-					Id:			  room.Id,
-					Name:     room.Name,
-					Requests: roomRequests,
-			})
+		}
+		response.Rooms = append(response.Rooms, struct {
+			Id       string    `json:"id"`
+			Name     string    `json:"name"`
+			Requests []Request `json:"requests"`
+		}{
+			Id:       room.Id,
+			Name:     room.Name,
+			Requests: roomRequests,
+		})
 	}
 
 	ctx.JSON(http.StatusOK, response)

@@ -8,10 +8,10 @@ if (-not $command)  {
 
 $ProjectRoot = "${PSScriptRoot}/.."
 
-$env:FPJP_API_ENVIRONMENT="Development"
-$env:FPJP_API_PORT="8080"
-$env:FPJP_API_MONGODB_USERNAME="root"
-$env:FPJP_API_MONGODB_PASSWORD="neUhaDnes"
+$env:AMBULANCE_API_ENVIRONMENT="Development"
+$env:AMBULANCE_API_PORT="8080"
+$env:AMBULANCE_API_MONGODB_USERNAME="root"
+$env:AMBULANCE_API_MONGODB_PASSWORD="neUhaDnes"
 
 function mongo {
     docker compose --file ${ProjectRoot}/deployments/docker-compose/compose.yaml $args
