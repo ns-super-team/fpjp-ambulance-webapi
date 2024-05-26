@@ -567,6 +567,27 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 	// get department
 	department, err := departmentService.FindDocument(ctx, departmentID)
 
+	switch err {
+	case nil:
+		// do nothing
+	case db_service.ErrNotFound:
+		ctx.JSON(
+			http.StatusNotFound,
+			gin.H{
+				"status":  "Not Found",
+				"message": "Department with provided ID was not found.",
+				"error":   err.Error(),
+			})
+	default:
+		ctx.JSON(
+			http.StatusBadGateway,
+			gin.H{
+				"status":  "Bad Gateway",
+				"message": "Failed to find Department in database.",
+				"error":   err.Error(),
+			})
+	}
+
 	// room service
 	value, exists = ctx.Get("room_service")
 	if !exists {
@@ -648,6 +669,8 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		})
 		return
 	}
+
+	fmt.Println("eq: ", equipment[0].Id)
 
 	// create response object
 	response := struct {

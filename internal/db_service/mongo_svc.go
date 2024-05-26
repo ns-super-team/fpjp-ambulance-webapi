@@ -223,6 +223,9 @@ func (this *mongoSvc[DocType]) FindDocuments(ctx context.Context, filter bson.M)
 	collection := db.Collection(this.Collection)
 	result, err := collection.Find(ctx, filter)
 
+	fmt.Println("collection: ", collection.Name())
+	fmt.Println("filter: ", filter)
+
 	// handling errors
 	switch err {
 	case nil:
@@ -239,6 +242,7 @@ func (this *mongoSvc[DocType]) FindDocuments(ctx context.Context, filter bson.M)
 		if err := result.Decode(&document); err != nil {
 			return nil, err
 		}
+		fmt.Println("result: ", document)
 		documents = append(documents, &document)
 	}
 
