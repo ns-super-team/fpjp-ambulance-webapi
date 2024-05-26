@@ -175,11 +175,6 @@ func (this *mongoSvc[DocType]) CreateDocument(ctx context.Context, id string, do
 		return result.Err()
 	}
 	_, err = collection.InsertOne(ctx, document)
-	fmt.Println("collection ", collection.Name())
-
-	result = collection.FindOne(ctx, bson.D{{Key: "id", Value: id}})
-	result.Decode(&document)
-	fmt.Println("result", document)
 
 	return err
 }
@@ -223,9 +218,6 @@ func (this *mongoSvc[DocType]) FindDocuments(ctx context.Context, filter bson.M)
 	collection := db.Collection(this.Collection)
 	result, err := collection.Find(ctx, filter)
 
-	fmt.Println("collection: ", collection.Name())
-	fmt.Println("filter: ", filter)
-
 	// handling errors
 	switch err {
 	case nil:
@@ -242,12 +234,8 @@ func (this *mongoSvc[DocType]) FindDocuments(ctx context.Context, filter bson.M)
 		if err := result.Decode(&document); err != nil {
 			return nil, err
 		}
-		fmt.Println("result: ", document)
 		documents = append(documents, &document)
 	}
-
-	fmt.Println("len(documents): ", len(documents))
-	fmt.Println("documents: ", documents)
 
 	return documents, nil
 }

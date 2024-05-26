@@ -687,9 +687,6 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 	for _, room := range rooms {
 		roomEquip := []Equipment{}
 		for _, eq := range equipment {
-			fmt.Println("eq.Room", eq.Room)
-			fmt.Println("room.Id", room.Id)
-			fmt.Println(eq.Room == room.Id)
 			if eq.Room == room.Id {
 				roomEquip = append(roomEquip, *eq)
 			}
@@ -704,7 +701,6 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 			Equipment: roomEquip,
 		})
 	}
-	fmt.Println(response)
 
 	ctx.JSON(http.StatusOK, response)
 }
