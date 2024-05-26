@@ -1,28 +1,28 @@
 package main
 
 import (
-		"log"
-		"os"
-		"strings"
-		"github.com/gin-gonic/gin"
-		"github.com/ns-super-team/fpjp-ambulance-webapi/api"
-		"github.com/ns-super-team/fpjp-ambulance-webapi/internal/fpjp"
-		"github.com/ns-super-team/fpjp-ambulance-webapi/internal/db_service"
-		"context"
-		"time"
-		"github.com/gin-contrib/cors"
-		"go.mongodb.org/mongo-driver/bson"
+	"context"
+	"log"
+	"os"
+	"strings"
+	"time"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/ns-super-team/fpjp-ambulance-webapi/api"
+	"github.com/ns-super-team/fpjp-ambulance-webapi/internal/db_service"
+	"github.com/ns-super-team/fpjp-ambulance-webapi/internal/fpjp"
 )
 
 func main() {
 	log.Printf("Server started")
 	port := os.Getenv("FPJP_API_PORT")
 	if port == "" {
-			port = "8080"
+		port = "8080"
 	}
 	environment := os.Getenv("FPJP_API_ENVIRONMENT")
 	if !strings.EqualFold(environment, "production") { // case insensitive comparison
-			gin.SetMode(gin.DebugMode)
+		gin.SetMode(gin.DebugMode)
 	}
 	engine := gin.New()
 	engine.Use(gin.Recovery())
@@ -32,7 +32,7 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Authorization", "Content-Type"},
 		ExposeHeaders:    []string{""},
 		AllowCredentials: false,
-		MaxAge: 12 * time.Hour,
+		MaxAge:           12 * time.Hour,
 	})
 	engine.Use(corsMiddleware)
 
@@ -57,7 +57,6 @@ func main() {
 	})
 	defer roomService.Disconnect(context.Background())
 
-
 	// db initialization
 	// insertInitialData(departmentService, roomService)
 
@@ -68,7 +67,7 @@ func main() {
 		ctx.Set("request_service", requestService)
 		ctx.Set("room_service", roomService)
 		ctx.Next()
-})
+	})
 
 	// request routings
 	fpjp.AddRoutes(engine)
