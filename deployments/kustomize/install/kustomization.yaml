@@ -6,9 +6,9 @@ resources:
 - service.yaml
 
 configMapGenerator:
-  # - name: fpjp-ambulance-webapi-mongodb-init
-  #   files:
-  #     - params/init-db.js
+  - name: fpjp-ambulance-webapi-mongodb-init
+    files:
+      - params/init-db.js
   - name: fpjp-ambulance-webapi-config
     literals:
       - database=fpjp-ambulance
