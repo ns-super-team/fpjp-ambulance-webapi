@@ -56,7 +56,7 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Con
 	URLroomId := ctx.Param("roomId")
 
 	// check if room ID from URL param and room ID from request body are equal
-	if URLroomId != equipment.RoomId {
+	if URLroomId != equipment.Room {
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
@@ -285,7 +285,7 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomRequest(ctx *gin.Conte
 	URLroomId := ctx.Param("roomId")
 
 	// Check if room ID from URL param and room ID from request body are equal
-	if URLroomId != request.RoomId {
+	if URLroomId != request.Room {
 		ctx.JSON(
 			http.StatusBadRequest,
 			gin.H{
@@ -687,10 +687,10 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 	for _, room := range rooms {
 		roomEquip := []Equipment{}
 		for _, eq := range equipment {
-			fmt.Println("eq.RoomId", eq.RoomId)
+			fmt.Println("eq.Room", eq.Room)
 			fmt.Println("room.Id", room.Id)
-			fmt.Println(eq.RoomId == room.Id)
-			if eq.RoomId == room.Id {
+			fmt.Println(eq.Room == room.Id)
+			if eq.Room == room.Id {
 				roomEquip = append(roomEquip, *eq)
 			}
 		}
@@ -850,7 +850,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gi
 	for _, room := range rooms {
 		roomRequests := []Request{}
 		for _, req := range requests {
-			if req.RoomId == room.Id {
+			if req.Room == room.Id {
 				roomRequests = append(roomRequests, *req)
 			}
 		}

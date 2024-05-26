@@ -16,7 +16,7 @@ type Equipment struct {
 	Id string `json:"id" bson:"id"`
 
 	// Identifier of the room the equipment belongs to
-	RoomId string `json:"room" bson:"room" binding:"required"`
+	Room string `json:"room" bson:"room" binding:"required"`
 
 	// Type of the equipment
 	Type string `json:"type" bson:"type" binding:"required"`
