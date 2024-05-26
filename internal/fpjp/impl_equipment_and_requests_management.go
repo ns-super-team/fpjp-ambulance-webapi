@@ -13,6 +13,8 @@ import (
 
 // AddRoomEquipment - Adds new equipment to a room
 func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Context) {
+	fmt.Println("req -> AddRoomEquipment")
+
 	value, exists := ctx.Get("equipment_service")
 	if !exists {
 		ctx.JSON(
@@ -100,6 +102,8 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomEquipment(ctx *gin.Con
 
 // DeleteEquipment - Deletes specific equipment
 func (this *implEquipmentAndRequestsManagementAPI) DeleteEquipment(ctx *gin.Context) {
+	fmt.Println("req -> DeleteEquipment")
+
 	value, exists := ctx.Get("equipment_service")
 	if !exists {
 		ctx.JSON(
@@ -154,6 +158,8 @@ func (this *implEquipmentAndRequestsManagementAPI) DeleteEquipment(ctx *gin.Cont
 
 // UpdateEquipment - Updates specific equipment
 func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Context) {
+	fmt.Println("req -> UpdateEquipment")
+
 	value, exists := ctx.Get("equipment_service")
 	if !exists {
 		ctx.JSON(
@@ -236,6 +242,8 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateEquipment(ctx *gin.Cont
 
 // AddRoomRequest - Adds new request to a room
 func (this *implEquipmentAndRequestsManagementAPI) AddRoomRequest(ctx *gin.Context) {
+	fmt.Println("req -> AddRoomRequest")
+
 	value, exists := ctx.Get("request_service")
 	if !exists {
 		ctx.JSON(
@@ -323,6 +331,8 @@ func (this *implEquipmentAndRequestsManagementAPI) AddRoomRequest(ctx *gin.Conte
 
 // DeleteRequest - Deletes specific request
 func (this *implEquipmentAndRequestsManagementAPI) DeleteRequest(ctx *gin.Context) {
+	fmt.Println("req -> DeleteRequest")
+
 	value, exists := ctx.Get("request_service")
 	if !exists {
 		ctx.JSON(
@@ -377,6 +387,8 @@ func (this *implEquipmentAndRequestsManagementAPI) DeleteRequest(ctx *gin.Contex
 
 // UpdateRequest - Updates specific request
 func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Context) {
+	fmt.Println("req -> UpdateRequest")
+
 	value, exists := ctx.Get("request_service")
 	if !exists {
 		ctx.JSON(
@@ -459,6 +471,8 @@ func (this *implEquipmentAndRequestsManagementAPI) UpdateRequest(ctx *gin.Contex
 
 // GetDepartments - Provides list of all departments
 func (this *implEquipmentAndRequestsManagementAPI) GetDepartments(ctx *gin.Context) {
+	fmt.Println("req -> GetDepartments")
+
 	value, exists := ctx.Get("department_service")
 	if !exists {
 		ctx.JSON(
@@ -481,13 +495,6 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartments(ctx *gin.Conte
 				"error":   "cannot cast department_service context to db_service.DbService",
 			})
 		return
-	}
-	fmt.Printf("db: %v\nok: %v \n", db, ok)
-
-	if db == nil {
-		fmt.Println("db is nil")
-	} else {
-		fmt.Println("db is not nil")
 	}
 
 	//create empty filter
@@ -519,6 +526,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartments(ctx *gin.Conte
 
 // GetDepartmentEquipment - Provides list of all equipment in a department
 func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *gin.Context) {
+	fmt.Println("req -> GetDepartmentEquipment")
 
 	// get department ID from URL parameter
 	departmentID := ctx.Param("departmentId")
@@ -678,6 +686,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 
 // GetDepartmentRequests - Provides list of all requests in a department
 func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gin.Context) {
+	fmt.Println("req -> GetDepartmentRequests")
 
 	departmentID := ctx.Param("departmentId")
 	if departmentID == "" {
