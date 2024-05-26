@@ -286,13 +286,13 @@ components:
           description: Name of the room
     Equipment:
       type: object
-      required: [id, room_id, type, name, count]
+      required: [id, room, type, name, count]
       properties:
         id:
           type: string
           example: eq1
           description: Unique identifier of the equipment
-        room_id:
+        room:
           type: string
           example: room1
           description: Identifier of the room the equipment belongs to
@@ -310,13 +310,13 @@ components:
           description: Number of equipment items available
     Request:
       type: object
-      required: [id, room_id, type, name, description]
+      required: [id, room, type, name, description]
       properties:
         id:
           type: string
           example: req1
           description: Unique identifier of the request
-        room_id:
+        room:
           type: string
           example: room1
           description: Identifier of the room the request is associated with
@@ -352,7 +352,7 @@ components:
       description: Example list containing equipment items
       value:
         - id: eq1
-          room_id: room1
+          room: room1
           type: diagnostic
           name: X-Ray Machine
           count: 1
@@ -361,13 +361,13 @@ components:
       description: Example list containing 2 requests
       value:
         - id: req1
-          room_id: room1
+          room: room1
           type: missing-equipment
           name: MRI Machine
           count: 2
           description: "Request for 2 new MRI machines."
         - id: req2
-          room_id: room2
+          room: room2
           type: repair
           name: CT Scanner
           count: null
@@ -377,7 +377,7 @@ components:
       description: Example of a repair request
       value:
         id: req2
-        room_id: room2
+        room: room2
         type: repair
         name: CT Scanner
         count: null
