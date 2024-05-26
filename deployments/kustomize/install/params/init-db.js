@@ -93,7 +93,7 @@ if (result.writeError) {
 }
 
 result = db[equipmentCollection].insertMany([
-  {"id": "1", "name": "Stetoskop", "count": 10, "room_id": "1", "type": "medical_equipment"},
+  {"id": "1", "name": "Stetoskop", "count": 10, "room": "1", "type": "medical_equipment"},
 ]);
 
 if (result.writeError) {
@@ -102,7 +102,7 @@ if (result.writeError) {
 }
 
 result = db[requestCollection].insertMany([
-  {"id": "1", "room_id": "1", "name": "Chýbajuce striekačky", "type": "missing", "count": 10, "description": ""},
+  {"id": "1", "room": "1", "name": "Chýbajuce striekačky", "type": "missing", "count": 10, "description": ""},
 ]);
 
 if (result.writeError) {

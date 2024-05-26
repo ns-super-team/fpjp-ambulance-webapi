@@ -659,7 +659,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 	}
 
 	// get equipment based on room IDs
-	equipmentFilter := bson.M{"room_id": bson.M{"$in": roomIDs}}
+	equipmentFilter := bson.M{"room": bson.M{"$in": roomIDs}}
 	equipment, err := equipmentService.FindDocuments(ctx, equipmentFilter)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{
@@ -687,6 +687,9 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 	for _, room := range rooms {
 		roomEquip := []Equipment{}
 		for _, eq := range equipment {
+			fmt.Println("eq.RoomId", eq.RoomId)
+			fmt.Println("room.Id", room.Id)
+			fmt.Println(eq.RoomId == room.Id)
 			if eq.RoomId == room.Id {
 				roomEquip = append(roomEquip, *eq)
 			}
@@ -819,7 +822,7 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentRequests(ctx *gi
 	}
 
 	// get requests based on room IDs
-	requestFilter := bson.M{"room_id": bson.M{"$in": roomIDs}}
+	requestFilter := bson.M{"room": bson.M{"$in": roomIDs}}
 	requests, err := requestService.FindDocuments(ctx, requestFilter)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{

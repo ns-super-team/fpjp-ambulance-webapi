@@ -16,7 +16,7 @@ type Request struct {
 	Id string `json:"id" bson:"id"`
 
 	// Identifier of the room the request is associated with
-	RoomId string `json:"room_id" bson:"room_id"`
+	RoomId string `json:"room" bson:"room"`
 
 	// Type of the request
 	Type string `json:"type" bson:"type"`
