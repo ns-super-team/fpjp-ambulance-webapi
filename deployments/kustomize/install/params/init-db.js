@@ -8,6 +8,8 @@ const database = process.env.AMBULANCE_API_MONGODB_DATABASE;
 const collection = process.env.AMBULANCE_API_MONGODB_COLLECTION;
 const departmentsCollection = "departments";
 const roomsCollection = "rooms";
+const requestCollection = "requests";
+const equipmentCollection = "equipment";
 
 const retrySeconds = parseInt(process.env.RETRY_CONNECTION_SECONDS || "5") || 5;
 
@@ -29,8 +31,8 @@ const databases = connection.getDBNames();
 if (databases.includes(database)) {
     const dbInstance = connection.getDB(database);
     const collections = dbInstance.getCollectionNames();
-    if (collections.includes(departmentsCollection) && collections.includes(roomsCollection)) {
-        print(`Collections '${departmentsCollection}' and '${roomsCollection}' already exist in database '${database}'`);
+    if (collections.includes(departmentsCollection) && collections.includes(roomsCollection) && collections.includes(requestCollection) && collections.includes(equipmentCollection)) {
+        print(`Collections '${departmentsCollection}', '${roomsCollection}', '${requestCollection}' and ${equipmentCollection} already exist in database '${database}'`);
         process.exit(0);
     }
 }
@@ -46,6 +48,16 @@ if (!db.getCollectionNames().includes(departmentsCollection)) {
 if (!db.getCollectionNames().includes(roomsCollection)) {
     db.createCollection(roomsCollection);
     db[roomsCollection].createIndex({ "id": 1 });
+}
+
+if (!db.getCollectionNames().includes(requestCollection)) {
+    db.createCollection(requestCollection);
+    db[requestCollection].createIndex({ "id": 1 });
+}
+
+if (!db.getCollectionNames().includes(equipmentCollection)) {
+    db.createCollection(equipmentCollection);
+    db[equipmentCollection].createIndex({ "id": 1 });
 }
 
 // Insert sample data into the departments collection
@@ -73,6 +85,24 @@ result = db[roomsCollection].insertMany([
   {"id": "7", "department_id": "4", "name": "Miestnosť 4.1"},
   {"id": "8", "department_id": "5", "name": "Miestnosť 5.1"},
   {"id": "9", "department_id": "5", "name": "Miestnosť 5.2"},
+]);
+
+if (result.writeError) {
+  console.error(result);
+  print(`Error when writing the data: ${result.errmsg}`);
+}
+
+result = db[equipmentCollection].insertMany([
+  {"id": "1", "name": "Stetoskop", "count": 10, "room_id": "1", "type": "medical_equipment"},
+]);
+
+if (result.writeError) {
+  console.error(result);
+  print(`Error when writing the data: ${result.errmsg}`);
+}
+
+result = db[requestCollection].insertMany([
+  {"id": "1", "room_id": "1", "name": "Chýbajuce striekačky", "type": "missing", "count": 10, "description": ""},
 ]);
 
 if (result.writeError) {

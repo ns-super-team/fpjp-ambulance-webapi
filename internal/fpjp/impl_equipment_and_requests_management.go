@@ -670,8 +670,6 @@ func (this *implEquipmentAndRequestsManagementAPI) GetDepartmentEquipment(ctx *g
 		return
 	}
 
-	fmt.Println("eq: ", equipment[0].Id)
-
 	// create response object
 	response := struct {
 		Id    string `json:"id"`

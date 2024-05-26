@@ -246,6 +246,9 @@ func (this *mongoSvc[DocType]) FindDocuments(ctx context.Context, filter bson.M)
 		documents = append(documents, &document)
 	}
 
+	fmt.Println("len(documents): ", len(documents))
+	fmt.Println("documents: ", documents)
+
 	return documents, nil
 }
 
